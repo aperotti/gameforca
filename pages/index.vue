@@ -4,6 +4,7 @@
     <div v-if="forca" class="forca">
       <!-- Created with Inkscape (http://www.inkscape.org/) -->
       <svg
+        class="svg-forca"
         xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
         xmlns:cc="http://creativecommons.org/ns#"
@@ -132,12 +133,12 @@
           </g>
         </g>
       </svg>
-      <div class="palavra">
-        <div v-for="letra in palavra">
+      <button class="letra" v-for="tecla in teclas" v-on:click="addletra(tecla)"> {{tecla}}</button>
+      <div v-for="leter in letter">
+        <div class="palavra" v-for="letra in palavra">
+          <div v-if="leter != letra"></div>
+          <div v-if="leter == letra">{{letra}}</div>
         </div>
-      </div>
-      <div class="erro">
-        <span v-for="letra in erradas">{{letra}}</span>
       </div>
     </div>
   </div>
@@ -147,27 +148,36 @@
 export default {
   data: () => ({  
     palavra: '',
-    erradas: 'certo',
+    erradas: '',
     forca: false,
-    tecla: ''
+    teclas: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Z"],
+    letter: [],
   }),
+
   methods: {
     iniciarjogo() {
       this.forca = !this.forca
-         const bancodepalavras = ['momo', 'mozim', 'pernilongo', 'Maxwell']
+      const bancodepalavras = ['MOMO', 'MOZIM', 'MOSQUITO', 'MAXWELL']
       let segredo = bancodepalavras[Math.floor(Math.random()*bancodepalavras.length)]
       this.palavra = segredo
+    },
+    addletra(tecla) {
+      this.letter.push(tecla)
+      return this.letter
     }
-  },
-  mounted: function() {
-    window.addEventListener('keypress', function(e){
-      this.tecla = e.key.toLowerCase()
-      console.log('this.tecla')
-    })
   },
 };
 </script>
 <style>
+.letra{
+  border-radius: 100%;
+  border: 1px solid #000;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+.letra:hover {
+  background-color: #e8e5e5;
+}
 .play {
   border-radius: 60%;
   background-color: #039BE5;
@@ -176,6 +186,9 @@ export default {
   color: #fff;
   cursor: pointer;
 }
+.play:hover {
+  background-color: #039be536;
+}
 .game-gallows {
   display: flex;
   flex-direction: column;
@@ -183,7 +196,7 @@ export default {
   justify-content: center;
   height: 100vh;
 }
-.palavra div {
+.palavra {
   margin-top: 30px;
   display: inline-block;
   width: 50px;
@@ -202,5 +215,9 @@ export default {
   text-transform: uppercase;
   font-size: 20px;
   color: red;
+}
+.svg-forca {
+  display: block;
+  margin-bottom: 30px;
 }
 </style>
